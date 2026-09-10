@@ -1,0 +1,148 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body { font-family: 'Poppins', sans-serif; }
+h1, h2, h3, h4, .font-display { font-family: 'Baloo 2', sans-serif; }
+
+.citrus-slice {
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(from 0deg, rgba(255,255,255,0.55) 0deg 1.4deg, transparent 1.4deg 22.5deg),
+    radial-gradient(circle at 50% 50%, #FFFDF2 0%, #FFFDF2 9%, #FFE07A 9% 17%, #FFB238 17% 88%, #FF7A1A 88% 100%);
+  box-shadow: inset 0 0 0 8px rgba(255,255,255,0.85), 0 16px 32px rgba(0,0,0,0.18);
+  position: relative;
+}
+.citrus-slice.small { box-shadow: inset 0 0 0 4px rgba(255,255,255,0.85), 0 8px 16px rgba(0,0,0,0.16); }
+
+.lime-slice {
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(from 0deg, rgba(255,255,255,0.5) 0deg 1.4deg, transparent 1.4deg 22.5deg),
+    radial-gradient(circle at 50% 50%, #F2FFDA 0%, #F2FFDA 9%, #D6F2A0 9% 17%, #9ED14C 17% 88%, #6FA82B 88% 100%);
+  box-shadow: inset 0 0 0 6px rgba(255,255,255,0.85), 0 8px 16px rgba(0,0,0,0.16);
+}
+
+.watermelon-slice {
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, #FF3D77 0%, #FF3D77 60%, #ffffff 60% 71%, #6FA82B 71% 100%);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.16);
+  position: relative;
+}
+.watermelon-slice::before {
+  content: '';
+  position: absolute;
+  width: 5px; height: 9px;
+  background: #000;
+  border-radius: 50%;
+  top: 32%; left: 38%;
+  box-shadow:
+    16px 6px 0 -1px #000,
+    -8px 16px 0 -1px #000,
+    20px -10px 0 -1px #000,
+    -14px -8px 0 -1px #000,
+    2px 24px 0 -1px #000,
+    -20px 4px 0 -1px #000;
+}
+
+.leaf {
+  width: 22px; height: 14px;
+  background: #8BC53F;
+  border-radius: 0 100% 0 100%;
+}
+
+.bottle-shape {
+  width: 48px; height: 72px;
+  border-radius: 10px 10px 18px 18px;
+  position: relative;
+}
+.bottle-shape::before {
+  content: '';
+  position: absolute;
+  top: -14px; left: 50%;
+  transform: translateX(-50%);
+  width: 18px; height: 14px;
+  background: #111;
+  border-radius: 4px 4px 0 0;
+}
+.bottle-shape::after {
+  content: '';
+  position: absolute;
+  top: -20px; left: 50%;
+  transform: translateX(-50%);
+  width: 10px; height: 8px;
+  background: #111;
+  border-radius: 2px;
+}
+
+.chip { transition: transform 0.15s ease, box-shadow 0.15s ease; }
+.chip:hover { transform: translateY(-2px); }
+.chip:active { transform: translateY(0px) scale(0.97); }
+
+.card-hover { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.card-hover:hover { transform: translateY(-6px); }
+
+.confetti-dot { position: absolute; border-radius: 50%; }
+
+/* Note picker image chips */
+.note-chip {
+  position: relative;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, filter 0.2s ease;
+  will-change: transform;
+}
+.note-chip:hover { transform: translateY(-4px) scale(1.04); }
+.note-chip .note-img {
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease;
+  max-width: 100%;
+  height: auto;
+}
+.note-chip.is-selected {
+  transform: translateY(-6px) scale(1.12);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.22);
+}
+.note-chip.is-selected .note-img { transform: rotate(8deg); }
+.note-chip.is-selected .note-label { font-weight: 800; }
+
+/* pop-in animation when a note is selected */
+@keyframes notePop {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(1.28) rotate(-6deg); }
+  60%  { transform: scale(1.1) rotate(4deg); }
+  100% { transform: scale(1.12) rotate(0deg); }
+}
+.note-chip.is-selected { animation: notePop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+/* spark burst on selection */
+@keyframes sparkBurst {
+  0%   { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(2.4); opacity: 0; }
+}
+.spark-burst {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,217,61,0.8), rgba(255,122,26,0) 70%);
+  animation: sparkBurst 0.5s ease-out forwards;
+  pointer-events: none;
+}
+
+/* live filter transitions */
+.fade-enter-active, .fade-leave-active { transition: opacity 0.25s ease, transform 0.25s ease; }
+.fade-enter-from, .fade-leave-to { opacity: 0; transform: translateY(8px); }
+
+/* float-in for matched cards */
+@keyframes floatIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.float-in { animation: floatIn 0.45s ease-out both; }
+
+/* blob decorations */
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(2px);
+  opacity: 0.5;
+  pointer-events: none;
+}

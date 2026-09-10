@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ZestPop — Scent Wheel</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          tangerine: { DEFAULT: '#FF7A1A', dark: '#E8630A', light: '#FFA34D' },
+          lime: { DEFAULT: '#8BC53F', dark: '#6FA82B', light: '#B6E06B' },
+          watermelon: { DEFAULT: '#FF3D77', dark: '#E01F5C', light: '#FF7DA6' },
+          sunshine: { DEFAULT: '#FFD93D', dark: '#F2C300', light: '#FFE97A' },
+          cream: '#FFF8EC'
+        },
+        fontFamily: {
+          display: ['"Baloo 2"', 'sans-serif'],
+          body: ['"Poppins"', 'sans-serif']
+        },
+        borderRadius: { '4xl': '32px' }
+      }
+    }
+  }
+</script>
+<style>
+  body { font-family: 'Poppins', sans-serif; }
+  .font-display { font-family: 'Baloo 2', sans-serif; }
+
+  .petal { border-radius: 50% 50% 50% 0 / 50% 50% 0 50%; }
+
+  /* wheel note tokens orbiting a center bottle, on a fixed ring radius set per-item */
+  @keyframes spin-cw { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes spin-ccw { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+  .wheel-ring { animation: spin-cw 26s linear infinite; }
+  .wheel-ring.slow { animation-duration: 38s; }
+  .wheel-ring.reverse { animation: spin-ccw 32s linear infinite; }
+  .wheel-token { animation: spin-ccw 26s linear infinite; }
+  .wheel-token.slow { animation: spin-cw 38s linear infinite; }
+  .wheel-token.reverse-token { animation: spin-cw 32s linear infinite; }
+
+  @keyframes glow-pulse {
+    0%,100% { box-shadow: 0 0 0px 0px currentColor; }
+    50% { box-shadow: 0 0 20px 5px currentColor; }
+  }
+  .glow-pulse { animation: glow-pulse 1.8s ease-in-out infinite; }
+
+  @keyframes bar-bounce {
+    0%,100% { height: 20%; }
+    50% { height: 90%; }
+  }
+  .bar-bounce { animation: bar-bounce .9s ease-in-out infinite; }
+
+  @keyframes float-y {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  .float-y { animation: float-y 5s ease-in-out infinite; }
+
+  .chip { transition: all .16s ease; }
+  .chip:hover { transform: scale(1.06); }
+  .chip.selected { box-shadow: inset 0 0 0 3px #000, 0 8px 0 rgba(0,0,0,.12); }
+
+  .card-pop { transition: transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .25s ease; }
+  .card-pop:hover { transform: translateY(-10px) scale(1.02); }
+
+  /* sticky bottom dock */
+  .dock-enter { animation: dock-in .4s ease both; }
+  @keyframes dock-in { from { transform: translate(-50%, 24px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
+</style>
+</head>
+<body class="bg-cream text-black">
+
+<header class="max-w-6xl mx-auto px-6 md:px-10 h-20 flex items-center justify-between">
+  <div class="flex items-center gap-2">
+    <div class="w-10 h-10 petal bg-watermelon border-4 border-black"></div>
+    <span class="font-display text-2xl font-extrabold">ZestPop</span>
+  </div>
+  <button class="font-display font-bold text-sm bg-lime px-5 py-2.5 rounded-full border-4 border-black shadow-[4px_4px_0_#000] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all">
+    My Matches
+  </button>
+</header>
+
+<main class="max-w-6xl mx-auto px-6 md:px-10 pb-40">
+
+  <!-- CENTERED HERO -->
+  <section class="text-center pt-8 pb-4 max-w-2xl mx-auto">
+    <span class="inline-block font-display font-bold text-xs uppercase tracking-widest bg-sunshine border-3 border-black px-4 py-1.5 rounded-full mb-5">Spin the wheel of scent</span>
+    <h1 class="font-display font-extrabold text-4xl md:text-6xl leading-tight">
+      Build your <span class="text-watermelon">signature</span> scent, note by note 🌀
+    </h1>
+    <p class="mt-4 text-black/70 max-w-lg mx-auto">Tap notes around the wheel. Every tap spins straight into our KNN engine — cosine similarity across 400+ perfumes, live.</p>
+  </section>
+
+  <!-- CENTERPIECE: note-picker wheel doubling as the AI matching visualization -->
+  <section class="py-8 md:py-14 flex flex-col items-center">
+    <div class="relative w-[300px] h-[300px] sm:w-[420px] sm:h-[420px] md:w-[520px] md:h-[520px] mx-auto">
+
+      <!-- dashed guide rings -->
+      <div class="absolute inset-0 m-auto w-[92%] h-[92%] rounded-full border-2 border-dashed border-black/15"></div>
+      <div class="absolute inset-0 m-auto w-[62%] h-[62%] rounded-full border-2 border-dashed border-black/15"></div>
+
+      <!-- outer ring of note chips -->
+      <div class="absolute inset-0 wheel-ring">
+        <div class="wheel-token absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <button class="chip selected font-display font-bold text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-full border-3 border-black bg-tangerine text-white shadow-[3px_3px_0_#000]">🍊 Bergamot</button>
+        </div>
+        <div class="wheel-token absolute top-1/4 right-0 translate-x-1/3 -translate-y-1/2">
+          <button class="chip font-display font-bold text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-full border-3 border-black bg-tangerine-light shadow-[3px_3px_0_#000]">🍋 Lemon</button>
+        </div>
+        <div class="wheel-token absolute bottom-1/4 right-0 translate-x-1/3 translate-y-1/2">
+          <button class="chip selected font-display font-bold text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-full border-3 border-black bg-watermelon text-white shadow-[3px_3px_0_#000]">🌹 Rose</button>
+        </div>
+        <div class="wheel-token absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2">
+          <button class="chip font-display font-bold text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-full border-3 border-black bg-watermelon-light shadow-[3px_3px_0_#000]">🌸 Peony</button>
+        </div>
+        <div class="wheel-token absolute bottom-1/4 left-0 -translate-x-1/3 translate-y-1/2">
+          <button class="chip selected font-display font-bold text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-full border-3 border-black bg-sunshine text-black shadow-[3px_3px_0_#000]">🍯 Honey</button>
+        </div>
+        <div class="wheel-token absolute top-1/4 left-0 -translate-x-1/3 -translate-y-1/2">
+          <button class="chip font-display font-bold text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-full border-3 border-black bg-lime-light shadow-[3px_3px_0_#000]">🌿 Vetiver</button>
+        </div>
+      </div>
+
+      <!-- inner ring of small orbiting glow dots (the "matching live" pulses) -->
+      <div class="absolute inset-0 wheel-ring reverse slow">
+        <div class="wheel-token reverse-token slow absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <span class="block w-4 h-4 rounded-full bg-lime border-2 border-black glow-pulse text-lime"></span>
+        </div>
+        <div class="wheel-token reverse-token slow absolute bottom-0 right-4 translate-y-1/2">
+          <span class="block w-4 h-4 rounded-full bg-sunshine border-2 border-black glow-pulse text-sunshine"></span>
+        </div>
+        <div class="wheel-token reverse-token slow absolute bottom-2 left-2 translate-y-1/2">
+          <span class="block w-4 h-4 rounded-full bg-watermelon border-2 border-black glow-pulse text-watermelon"></span>
+        </div>
+      </div>
+
+      <!-- center: bottle + fake equalizer, the AI core -->
+      <div class="absolute inset-0 m-auto w-36 h-36 sm:w-44 sm:h-44 bg-black rounded-full border-4 border-black flex flex-col items-center justify-center gap-2 float-y">
+        <div class="relative w-10 h-14 sm:w-12 sm:h-16 bg-white rounded-t-full rounded-b-2xl border-4 border-black">
+          <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-4 h-4 bg-watermelon rounded-full border-2 border-black"></div>
+        </div>
+        <div class="flex items-end gap-1 h-6 sm:h-8">
+          <div class="w-1.5 bg-tangerine rounded-full bar-bounce" style="animation-delay:0s"></div>
+          <div class="w-1.5 bg-watermelon rounded-full bar-bounce" style="animation-delay:.15s"></div>
+          <div class="w-1.5 bg-sunshine rounded-full bar-bounce" style="animation-delay:.3s"></div>
+          <div class="w-1.5 bg-lime rounded-full bar-bounce" style="animation-delay:.2s"></div>
+          <div class="w-1.5 bg-tangerine rounded-full bar-bounce" style="animation-delay:.4s"></div>
+        </div>
+      </div>
+    </div>
+
+    <p class="font-body text-xs sm:text-sm text-black/50 text-center mt-6 max-w-xs sm:max-w-sm">
+      tf.matMul(perfumes, notes) → cosine similarity → ranked live as you tap
+    </p>
+  </section>
+
+  <!-- RESULTS: magazine-style asymmetric grid -->
+  <section class="py-8 md:py-14">
+    <div class="flex items-end justify-between mb-8 flex-wrap gap-3">
+      <div>
+        <h2 class="font-display font-extrabold text-3xl md:text-4xl mb-1">Your top bloom 🌼</h2>
+        <p class="text-black/60">Ranked closest-to-furthest by note similarity.</p>
+      </div>
+      <span class="font-display font-bold text-xs uppercase tracking-widest bg-lime border-3 border-black px-4 py-2 rounded-full">3 matches</span>
+    </div>
+
+    <div class="grid md:grid-cols-5 gap-6">
+
+      <!-- featured large card -->
+      <div class="card-pop md:col-span-3 bg-watermelon-light rounded-4xl border-4 border-black p-8 shadow-[8px_8px_0_#000] flex flex-col sm:flex-row gap-6 items-center">
+        <div class="w-24 h-36 shrink-0 bg-white rounded-t-full rounded-b-2xl border-4 border-black relative">
+          <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-6 h-6 bg-watermelon rounded-full border-4 border-black"></div>
+        </div>
+        <div class="text-center sm:text-left">
+          <span class="font-display font-extrabold text-5xl block mb-2">97%</span>
+          <h3 class="font-display font-extrabold text-2xl">Velvet Rose</h3>
+          <p class="text-sm text-black/60 mb-4">Maison Fleur</p>
+          <div class="flex gap-1.5 flex-wrap justify-center sm:justify-start">
+            <span class="text-xs font-display font-bold bg-white/70 border-2 border-black px-2.5 py-1 rounded-full">Rose</span>
+            <span class="text-xs font-display font-bold bg-white/70 border-2 border-black px-2.5 py-1 rounded-full">Honey</span>
+            <span class="text-xs font-display font-bold bg-white/70 border-2 border-black px-2.5 py-1 rounded-full">Bergamot</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- two stacked smaller cards -->
+      <div class="md:col-span-2 flex flex-col gap-6">
+        <div class="card-pop bg-sunshine-light rounded-4xl border-4 border-black p-6 shadow-[6px_6px_0_#000] flex items-center gap-4">
+          <div class="w-14 h-20 shrink-0 bg-white rounded-t-full rounded-b-2xl border-4 border-black relative">
+            <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-4 h-4 bg-sunshine rounded-full border-4 border-black"></div>
+          </div>
+          <div>
+            <span class="font-display font-extrabold text-2xl block">92%</span>
+            <h3 class="font-display font-extrabold text-lg">Golden Honeycomb</h3>
+            <p class="text-xs text-black/60">Amber &amp; Co</p>
+          </div>
+        </div>
+
+        <div class="card-pop bg-lime-light rounded-4xl border-4 border-black p-6 shadow-[6px_6px_0_#000] flex items-center gap-4">
+          <div class="w-14 h-20 shrink-0 bg-white rounded-t-full rounded-b-2xl border-4 border-black relative">
+            <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-4 h-4 bg-lime rounded-full border-4 border-black"></div>
+          </div>
+          <div>
+            <span class="font-display font-extrabold text-2xl block">88%</span>
+            <h3 class="font-display font-extrabold text-lg">Garden Bergamot</h3>
+            <p class="text-xs text-black/60">Verde &amp; Co</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- floating selection dock -->
+<div class="dock-enter fixed bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-md z-20">
+  <div class="bg-black text-white rounded-full border-4 border-black shadow-[6px_6px_0_#000] px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
+    <div class="flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-lime glow-pulse text-lime"></span>
+      <span class="font-display font-bold text-xs sm:text-sm">3 notes selected</span>
+    </div>
+    <button class="font-display font-extrabold text-xs sm:text-sm bg-watermelon px-4 sm:px-6 py-2 rounded-full border-2 border-white hover:bg-white hover:text-black transition-colors whitespace-nowrap">
+      🧠 Run the Match
+    </button>
+  </div>
+</div>
+
+<footer class="border-t-4 border-black bg-white mt-8">
+  <div class="max-w-6xl mx-auto px-6 md:px-10 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
+    <div class="flex items-center gap-2">
+      <div class="w-7 h-7 petal bg-watermelon border-2 border-black"></div>
+      <span class="font-display text-lg font-extrabold">ZestPop</span>
+    </div>
+    <p class="text-black/50 text-sm">Made for scent nerds. 🌿</p>
+  </div>
+</footer>
+
+</body>
+</html>

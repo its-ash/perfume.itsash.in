@@ -1,0 +1,17 @@
+# Nuxt / Node
+node_modules
+.nuxt
+.output
+.nitro
+.cache
+dist
+
+# OS / editor
+.DS_Store
+*.log
+.env
+.env.*
+
+# Build output (deployed via docs/)
+docs
+!docs/.nojekyll

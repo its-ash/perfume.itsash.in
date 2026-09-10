@@ -1,0 +1,101 @@
+export interface Note {
+  id: string;
+  name: string;
+  family: 'citrus' | 'fruity' | 'floral' | 'gourmand' | 'woody' | 'amber' | 'musk' | 'green' | 'spicy';
+  color: string;       // tailwind color token used in UI
+  textColor: string;   // 'white' | 'black'
+}
+
+// Canonical note catalog — every perfume note maps onto one of these ids.
+export const NOTES: Note[] = [
+  { id: 'bergamot',    name: 'Bergamot',     family: 'citrus',  color: 'tangerine', textColor: 'white' },
+  { id: 'grapefruit',  name: 'Grapefruit',   family: 'citrus',  color: 'watermelon', textColor: 'white' },
+  { id: 'mandarin',    name: 'Mandarin',     family: 'citrus',  color: 'lime',     textColor: 'white' },
+  { id: 'lemon',       name: 'Lemon',        family: 'citrus',  color: 'sunshine',  textColor: 'black' },
+  { id: 'neroli',      name: 'Neroli',       family: 'citrus',  color: 'tangerine', textColor: 'white' },
+  { id: 'orange',      name: 'Orange',       family: 'citrus',  color: 'tangerine', textColor: 'white' },
+  { id: 'peach',       name: 'Peach',        family: 'fruity',  color: 'watermelon', textColor: 'white' },
+  { id: 'blackcurrant',name: 'Blackcurrant', family: 'fruity',  color: 'watermelon', textColor: 'white' },
+  { id: 'pear',        name: 'Pear',         family: 'fruity',  color: 'lime',     textColor: 'white' },
+  { id: 'fig',         name: 'Fig',          family: 'fruity',  color: 'lime',     textColor: 'white' },
+  { id: 'lychee',      name: 'Lychee',       family: 'fruity',  color: 'watermelon', textColor: 'white' },
+  { id: 'coconut',     name: 'Coconut',      family: 'gourmand',color: 'sunshine',  textColor: 'black' },
+  { id: 'guava',       name: 'Guava',        family: 'fruity',  color: 'sunshine',  textColor: 'black' },
+  { id: 'apple',       name: 'Apple',        family: 'fruity',  color: 'watermelon', textColor: 'white' },
+  { id: 'plum',        name: 'Plum',         family: 'fruity',  color: 'watermelon', textColor: 'white' },
+  { id: 'rose',        name: 'Rose',         family: 'floral',  color: 'watermelon', textColor: 'white' },
+  { id: 'jasmine',     name: 'Jasmine',      family: 'floral',  color: 'sunshine',  textColor: 'black' },
+  { id: 'lily',        name: 'Lily',         family: 'floral',  color: 'watermelon', textColor: 'white' },
+  { id: 'violet',      name: 'Violet',       family: 'floral',  color: 'watermelon', textColor: 'white' },
+  { id: 'tuberose',    name: 'Tuberose',     family: 'floral',  color: 'watermelon', textColor: 'white' },
+  { id: 'ylang',       name: 'Ylang-Ylang',  family: 'floral',  color: 'sunshine',  textColor: 'black' },
+  { id: 'geranium',    name: 'Geranium',     family: 'floral',  color: 'lime',     textColor: 'white' },
+  { id: 'iris',        name: 'Iris',         family: 'floral',  color: 'watermelon', textColor: 'white' },
+  { id: 'vanilla',     name: 'Vanilla',      family: 'gourmand',color: 'sunshine',  textColor: 'black' },
+  { id: 'tonka',       name: 'Tonka Bean',   family: 'gourmand',color: 'sunshine',  textColor: 'black' },
+  { id: 'caramel',     name: 'Caramel',      family: 'gourmand',color: 'sunshine',  textColor: 'black' },
+  { id: 'chocolate',   name: 'Chocolate',    family: 'gourmand',color: 'watermelon', textColor: 'white' },
+  { id: 'almond',      name: 'Almond',       family: 'gourmand',color: 'sunshine',  textColor: 'black' },
+  { id: 'honey',       name: 'Honey',        family: 'gourmand',color: 'sunshine',  textColor: 'black' },
+  { id: 'musk',        name: 'Musk',         family: 'musk',    color: 'tangerine', textColor: 'white' },
+  { id: 'amber',       name: 'Amber',        family: 'amber',   color: 'tangerine', textColor: 'white' },
+  { id: 'labdanum',    name: 'Labdanum',     family: 'amber',   color: 'tangerine', textColor: 'white' },
+  { id: 'benzoin',     name: 'Benzoin',      family: 'amber',   color: 'tangerine', textColor: 'white' },
+  { id: 'sandalwood',  name: 'Sandalwood',   family: 'woody',   color: 'tangerine', textColor: 'white' },
+  { id: 'cedar',       name: 'Cedarwood',    family: 'woody',   color: 'tangerine', textColor: 'white' },
+  { id: 'vetiver',     name: 'Vetiver',      family: 'woody',   color: 'lime',     textColor: 'white' },
+  { id: 'patchouli',   name: 'Patchouli',    family: 'woody',   color: 'lime',     textColor: 'white' },
+  { id: 'oud',         name: 'Oud',          family: 'woody',   color: 'tangerine', textColor: 'white' },
+  { id: 'cardamom',    name: 'Cardamom',     family: 'spicy',   color: 'tangerine', textColor: 'white' },
+  { id: 'pinkpepper',  name: 'Pink Pepper',  family: 'spicy',   color: 'watermelon', textColor: 'white' },
+  { id: 'cinnamon',    name: 'Cinnamon',     family: 'spicy',   color: 'tangerine', textColor: 'white' },
+  { id: 'saffron',     name: 'Saffron',      family: 'spicy',   color: 'tangerine', textColor: 'white' },
+  { id: 'ginger',      name: 'Ginger',       family: 'spicy',   color: 'sunshine',  textColor: 'black' },
+  { id: 'mint',        name: 'Mint',         family: 'green',   color: 'lime',     textColor: 'white' },
+  { id: 'galbanum',    name: 'Galbanum',     family: 'green',   color: 'lime',     textColor: 'white' },
+  { id: 'tea',         name: 'Tea',          family: 'green',   color: 'lime',     textColor: 'white' },
+  { id: 'leather',     name: 'Leather',      family: 'woody',   color: 'tangerine', textColor: 'white' },
+  { id: 'pepper',      name: 'Black Pepper', family: 'spicy',  color: 'watermelon', textColor: 'white' },
+  { id: 'magnolia',    name: 'Magnolia',     family: 'floral', color: 'watermelon', textColor: 'white' },
+  { id: 'lavender',    name: 'Lavender',     family: 'floral', color: 'watermelon', textColor: 'white' },
+  { id: 'coffee',      name: 'Coffee',      family: 'gourmand',color: 'tangerine', textColor: 'white' },
+  { id: 'tobacco',     name: 'Tobacco',     family: 'woody',   color: 'tangerine', textColor: 'white' },
+  { id: 'sage',        name: 'Sage',        family: 'green',   color: 'lime',     textColor: 'white' },
+  { id: 'basil',       name: 'Basil',       family: 'green',   color: 'lime',     textColor: 'white' },
+  { id: 'incense',     name: 'Incense',     family: 'woody',   color: 'tangerine', textColor: 'white' },
+  { id: 'rum',         name: 'Rum',         family: 'gourmand',color: 'tangerine', textColor: 'white' },
+  { id: 'coriander',   name: 'Coriander',   family: 'spicy',   color: 'lime',     textColor: 'white' },
+  { id: 'birch',       name: 'Birch',       family: 'woody',   color: 'tangerine', textColor: 'white' },
+  { id: 'melon',       name: 'Melon',       family: 'fruity',  color: 'lime',     textColor: 'white' },
+  { id: 'pine',        name: 'Pine',       family: 'green',   color: 'lime',     textColor: 'white' },
+  { id: 'passionfruit',name: 'Passionfruit',family: 'fruity',  color: 'sunshine',  textColor: 'black' },
+  { id: 'peony',       name: 'Peony',      family: 'floral',  color: 'watermelon', textColor: 'white' },
+  { id: 'thyme',       name: 'Thyme',      family: 'green',   color: 'lime',     textColor: 'white' },
+  { id: 'osmanthus',   name: 'Osmanthus',  family: 'floral',  color: 'sunshine',  textColor: 'black' },
+  { id: 'pineapple',   name: 'Pineapple',  family: 'fruity',  color: 'sunshine',  textColor: 'black' },
+  { id: 'whisky',      name: 'Whisky',     family: 'gourmand',color: 'tangerine', textColor: 'white' },
+  { id: 'lotus',       name: 'Lotus',      family: 'floral',  color: 'watermelon', textColor: 'white' },
+  { id: 'strawberry',  name: 'Strawberry', family: 'fruity',  color: 'watermelon', textColor: 'white' },
+  { id: 'mango',       name: 'Mango',      family: 'fruity',  color: 'sunshine',  textColor: 'black' },
+  { id: 'cumin',       name: 'Cumin',      family: 'spicy',   color: 'tangerine', textColor: 'white' },
+  { id: 'marine',      name: 'Marine',     family: 'citrus',  color: 'lime',     textColor: 'white' },
+  { id: 'oakmoss',     name: 'Oakmoss',    family: 'woody',   color: 'lime',     textColor: 'white' },
+  { id: 'pomegranate', name: 'Pomegranate',family: 'fruity',  color: 'watermelon', textColor: 'white' },
+  { id: 'narcissus',   name: 'Narcissus',  family: 'floral',  color: 'sunshine',  textColor: 'black' },
+  { id: 'cucumber',    name: 'Cucumber',   family: 'green',   color: 'lime',     textColor: 'white' },
+  { id: 'myrrh',       name: 'Myrrh',      family: 'amber',   color: 'tangerine', textColor: 'white' }
+];
+
+export const NOTE_MAP: Record<string, Note> = Object.fromEntries(NOTES.map(n => [n.id, n]));
+
+// Notes surfaced as the primary "pick your notes" chips (the juicy, accessible set).
+export const PICKABLE_NOTE_IDS: string[] = [
+  'bergamot','grapefruit','mandarin','lemon','neroli','orange',
+  'peach','blackcurrant','pear','fig','lychee','coconut','guava','apple','plum',
+  'rose','jasmine','lily','violet','tuberose','ylang','iris',
+  'vanilla','tonka','caramel','chocolate','almond','honey',
+  'musk','amber','sandalwood','cedar','vetiver','patchouli','oud',
+  'cardamom','pinkpepper','cinnamon','saffron','ginger','mint','tea',
+  'leather','pepper','lavender','coffee','tobacco','sage','incense',
+  'pineapple','strawberry','mango','melon','passionfruit','magnolia','peony'
+];
