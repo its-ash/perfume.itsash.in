@@ -1,0 +1,1 @@
+import{_ as t,o as s,c,V as n}from"./1YWjFFT5.js";const r={},a={class:"min-h-screen text-black",style:{background:"linear-gradient(180deg, #FFF6F0 0%, #FDF2F8 30%, #F0FBF4 65%, #FFFBEA 100%)"}};function o(e,F){return s(),c("div",a,[n(e.$slots,"default")])}const d=t(r,[["render",o]]);export{d as default};

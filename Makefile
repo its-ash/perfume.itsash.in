@@ -5,8 +5,6 @@ run:
 
 build:
 	npm run generate
-	mkdir -p docs
-	cp -r .output/public/* docs/
 	touch docs/.nojekyll
 
 deploy: build

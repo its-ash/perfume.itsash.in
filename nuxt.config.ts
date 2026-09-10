@@ -36,6 +36,9 @@ export default defineNuxtConfig({
     '/': { ssr: false }
   },
   nitro: {
+    output: {
+      publicDir: 'docs'
+    },
     prerender: {
       routes: [
         '/',
